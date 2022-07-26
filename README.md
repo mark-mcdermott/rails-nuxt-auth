@@ -43,6 +43,6 @@ end
 ```
 - your sign in postman call will look like this https://share.cleanshot.com/wjRlEC
 
-*** To Run 
+### To Run 
 - `cd backend && bundle && rails s`
 - in another tab, `cd frontend && yarn && npm run dev`
