@@ -46,4 +46,4 @@ end
 ### To Run 
 - `cd backend && bundle && rails s`
 - in another tab, `cd frontend && yarn && npm run dev`
-- when frontend is done check for the url/port it says it's listening on and go there in your browser. it will be http://localhost:<port> but the port is chosen randomly each time
+- when frontend is done check for the url/port it says it's listening on and go there in your browser. it will be `http://localhost:<port>` but the port is chosen randomly each time
