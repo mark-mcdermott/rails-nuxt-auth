@@ -3,7 +3,7 @@ based on https://medium.com/@fishpercolator/how-to-separate-frontend-backend-wit
 Here are changes I had to do from their tutorial (or stuff that wasn't obvious to me at first).
 
 - uncomment rack-cors & jbuilder in backend Gemfile
-- they are right that you can't make the below tweaks to ApplicationController until after devise is installed.
+- they are right that you can't make the tweaks to ApplicationController until after devise is installed. Make them after you install devise.
 - my axios port in nuxt.config.js was 3000 
 - make sure your nuxt.config.js modules look like this:
 ```
