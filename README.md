@@ -1,7 +1,9 @@
+### Source
 based on https://medium.com/@fishpercolator/how-to-separate-frontend-backend-with-rails-api-nuxt-js-and-devise-jwt-cf7dd9da9d16
 
 Here are changes I had to do from their tutorial (or stuff that wasn't obvious to me at first).
 
+### Notes
 - i didn't use docker. i just ran front and backend locally.
 - uncomment rack-cors & jbuilder in backend Gemfile
 - they are right that you can't make the tweaks to ApplicationController until after devise is installed. Make them after you install devise.
