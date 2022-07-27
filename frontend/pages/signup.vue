@@ -1,7 +1,7 @@
 <template>
   <v-layout>
     <v-flex>
-      <h1 style="margin: 20px 20px 10px;">Sign Up</h1>
+      <Title :title="title"></Title>
       <v-card>
         <v-alert v-if="!!error" type="error">{{error}}</v-alert>
         <v-card-text>
@@ -19,9 +19,12 @@
 </template>
 
 <script>
+import Title from '@/components/Title';
 export default {
+  components: {Title},
   data () {
     return {
+      title: 'Sign Up',
       email: '',
       password: '',
       error: null,

@@ -1,0 +1,2 @@
+class PrivateDatum < ApplicationRecord
+end

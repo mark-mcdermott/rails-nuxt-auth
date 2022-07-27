@@ -1,0 +1,2 @@
+class PublicDatum < ApplicationRecord
+end

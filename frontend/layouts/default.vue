@@ -5,6 +5,8 @@
         <v-toolbar>
           <v-toolbar-title><NuxtLink to="/">Cool Guy Site 😎</NuxtLink></v-toolbar-title>
           <v-spacer />
+          <NuxtLink to="/public-data">Public Data</NuxtLink>
+          <NuxtLink v-if="$auth.$state.loggedIn" to="/private-data">Private Data</NuxtLink>
           <NuxtLink v-if="!$auth.$state.loggedIn" to="/signup">Sign Up</NuxtLink>
           <NuxtLink v-if="!$auth.$state.loggedIn" to="/login">Log In</NuxtLink>
           <a v-if="$auth.$state.loggedIn" @click.prevent="logout">Log Out</a>

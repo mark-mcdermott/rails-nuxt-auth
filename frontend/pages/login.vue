@@ -1,8 +1,8 @@
 <template>
   <v-layout>
     <v-flex>
-      <h1 style="margin: 20px 20px 10px;">Log In</h1>
-      <v-card v-if="$auth.state.loggedIn">
+      <Title :title="title"></Title>
+      <v-card v-if="$auth.$state.loggedIn">
         <div v-if="!!error"></div>
         <v-alert type="error">{{error}}</v-alert>
         <v-card-text>
@@ -29,9 +29,12 @@
 </template>
 
 <script>
+import Title from '@/components/Title';
 export default {
+  components: {Title},
   data () {
     return {
+      title: 'Log In',
       email: '',
       password: '',
       error: null,
