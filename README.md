@@ -44,6 +44,12 @@ class User < ApplicationRecord
 end
 ```
 - your sign in postman call will look like this https://share.cleanshot.com/wjRlEC
+- i had to add the following three lines to backend/config/application.rb at line 25 to get rid of a "Your application has sessions disabled" error:
+```
+config.session_store :cookie_store, key: '_interslice_session'
+    config.middleware.use ActionDispatch::Cookies
+    config.middleware.use config.session_store, config.session_options
+```
 
 ### To Run 
 - `cd backend && bundle && rails s`

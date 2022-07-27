@@ -1,53 +1,37 @@
 <template>
   <div>
-    <nuxt/>
+    <v-layout>
+      <v-flex>
+        <v-toolbar>
+          <v-toolbar-title><NuxtLink to="/">Cool Guy Site 😎</NuxtLink></v-toolbar-title>
+          <v-spacer />
+          <NuxtLink v-if="!$auth.$state.loggedIn" to="/signup">Sign Up</NuxtLink>
+          <NuxtLink v-if="!$auth.$state.loggedIn" to="/login">Log In</NuxtLink>
+          <a v-if="$auth.$state.loggedIn" @click.prevent="logout">Log Out</a>
+        </v-toolbar>
+        <nuxt/>
+      </v-flex>
+    </v-layout>
   </div>
 </template>
+
+<script>
+export default {
+  methods: {
+    logout: function () {
+      this.$auth.logout().catch(e => {this.error = e + ''})
+    }
+  }
+}
+</script>
 
 <style>
 html {
   font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   font-size: 16px;
-  word-spacing: 1px;
-  -ms-text-size-adjust: 100%;
-  -webkit-text-size-adjust: 100%;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
-  box-sizing: border-box;
+  color: #333;
 }
-
-*, *:before, *:after {
-  box-sizing: border-box;
-  margin: 0;
-}
-
-.button--green {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #3b8070;
-  color: #3b8070;
-  text-decoration: none;
-  padding: 10px 30px;
-}
-
-.button--green:hover {
-  color: #fff;
-  background-color: #3b8070;
-}
-
-.button--grey {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #35495e;
-  color: #35495e;
-  text-decoration: none;
-  padding: 10px 30px;
-  margin-left: 15px;
-}
-
-.button--grey:hover {
-  color: #fff;
-  background-color: #35495e;
-}
+h1 { margin: 20px; font-size: 65px; font-weight: bold; }
+header a { margin: 0 10px; text-decoration: none; color: #333; font-weight: bold; }
 </style>
 
