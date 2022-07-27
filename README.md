@@ -21,7 +21,7 @@ Here are changes I had to do from their tutorial (or stuff that wasn't obvious t
 - make sure you create the create/show .json.jbuilder files in app/views/devise/sessions/
 - change all `$auth.state` references to `$auth.$state`
 - change everything that says blacklist to denylist
-  - the model file is called jwt_denylist.rb
+  - the model file is called jwt_denylist.rb so the model generate line is `rails g model jwt_denylist jti:string:index exp:datetime`
   - the line in the model is `include Devise::JWT::RevocationStrategies::Denylist`
   - the migration will look like this:
   ```
@@ -44,7 +44,33 @@ class User < ApplicationRecord
          jwt_revocation_strategy: JwtDenylist
 end
 ```
+- rails has changed some of the `secrets` to `credential`. The line to get the secret is still `rails secret`, though. The line to open the credential file in VS Code is `EDITOR='code --wait' rails credentials:edit`. The line to add in the credentials file will be `jwt_secret: <your secret>`, so for example: 
+```
+jwt_secret: 45a7335169c37a67c314671b698cfffeba735e46959a641479749aadce63fad7c430484f90be041a7c3d9b99b2480f687df6e22610b98e15f07006c1ae4eacff
+```
+Then the lines to add in `app/config/initializers/devise.rb` are
+```
+config.jwt do |jwt|
+  jwt.secret = Rails.application.credentials.jwt_secret
+end
+```
+and you can add those right after the `config.mailer` line on line 28.
 - your sign in postman call will look like this https://share.cleanshot.com/wjRlEC
+- to scope resources to /api in routes.rb, it will look like this:
+```
+Rails.application.routes.draw do  
+  scope :api, defaults: {format: :json} do
+    resources :private_data
+    resources :public_data
+    resources :examples
+    devise_for :users, controllers: {sessions: 'sessions'}
+    devise_scope :user do
+      get 'users/current', to: 'sessions#show'
+    end
+  end
+end
+
+```
 - i had to add the following three lines to backend/config/application.rb at line 25 to get rid of a "Your application has sessions disabled" error:
 ```
 config.session_store :cookie_store, key: '_interslice_session'
