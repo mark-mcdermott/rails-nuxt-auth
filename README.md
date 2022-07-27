@@ -19,6 +19,7 @@ Here are changes I had to do from their tutorial (or stuff that wasn't obvious t
 - change the v-alerts in the login template to this:
 `<v-alert type="error">{{error}}</v-alert>`
 - make sure you create the create/show .json.jbuilder files in app/views/devise/sessions/
+- change all `$auth.state` references to `$auth.$state`
 - change everything that says blacklist to denylist
   - the model file is called jwt_denylist.rb
   - the line in the model is `include Devise::JWT::RevocationStrategies::Denylist`
@@ -103,6 +104,73 @@ export default {
 }
 </script>
 ```
+
+### To Test/Demonstrate the Public/Private Routes Working Correctly
+in `/backend`:
+- `rails g scaffold PublicData datum:string`
+- `rails db:migrate`
+- `rails g scaffold PrivateData datum:string`
+- `rails db:migrate`
+- You can make a `db/seeds.rb` file like this:
+```
+PublicDatum.create(datum: "Public Datum 1")
+PublicDatum.create(datum: "Public Datum 2")
+PublicDatum.create(datum: "Public Datum 3")
+PublicDatum.create(datum: "Public Datum 4")
+PublicDatum.create(datum: "Public Datum 5")
+PrivateDatum.create(datum: "Private Datum 1")
+PrivateDatum.create(datum: "Private Datum 2")
+PrivateDatum.create(datum: "Private Datum 3")
+PrivateDatum.create(datum: "Private Datum 4")
+PrivateDatum.create(datum: "Private Datum 5")
+```
+ and then run `rails db:seed` to seed the db
+- I used a `layouts/default.vue` file like this. It has the navbar with links to the public/private pages.
+```
+<template>
+  <div>
+    <v-layout>
+      <v-flex>
+        <v-toolbar>
+          <v-toolbar-title><NuxtLink to="/">Cool Guy Site 😎</NuxtLink></v-toolbar-title>
+          <v-spacer />
+          <NuxtLink to="/public-data">Public Data</NuxtLink>
+          <NuxtLink v-if="$auth.$state.loggedIn" to="/private-data">Private Data</NuxtLink>
+          <NuxtLink v-if="!$auth.$state.loggedIn" to="/signup">Sign Up</NuxtLink>
+          <NuxtLink v-if="!$auth.$state.loggedIn" to="/login">Log In</NuxtLink>
+          <a v-if="$auth.$state.loggedIn" @click.prevent="logout">Log Out</a>
+        </v-toolbar>
+        <nuxt/>
+      </v-flex>
+    </v-layout>
+  </div>
+</template>
+
+<script>
+export default {
+  methods: {
+    logout: function () {
+      this.$auth.logout().catch(e => {this.error = e + ''})
+    }
+  }
+}
+</script>
+
+<style>
+html {
+  font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 16px;
+  color: #333;
+}
+h1 { margin: 20px; font-size: 65px; font-weight: bold; }
+header a { margin: 0 10px; text-decoration: none; color: #333; font-weight: bold; }
+</style>
+```
+- Then in `backend/app/controllers/private_data_controller.rb` I inserted this on line 2: 
+```
+before_action :authenticate_user!
+``` 
+- You can test the front and backend authentication by at first not having `before_action :authenticate_user!` in private_data_controller.rb and also not having `v-if="$auth.$state.loggedIn"` in the NuxtLink to the Private Data page in `layouts/default.vue`. So the "private data" will show completely publicly in that case. Then add `before_action :authenticate_user!` on the backend to private_data_controller.rb. Now when you load the page, you should get a 401 unauthorized error in the console and the data won't load. Then add `v-if="$auth.$state.loggedIn"` in the NuxtLink in the Private Data page and now the link won't show in the navbar if you're not logged in.
 
 ### To Run 
 - `cd backend && bundle && rails s`
