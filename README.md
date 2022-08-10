@@ -199,6 +199,7 @@ before_action :authenticate_user!
 - You can test the front and backend authentication by at first not having `before_action :authenticate_user!` in private_data_controller.rb and also not having `v-if="$auth.$state.loggedIn"` in the NuxtLink to the Private Data page in `layouts/default.vue`. So the "private data" will show completely publicly in that case. Then add `before_action :authenticate_user!` on the backend to private_data_controller.rb. Now when you load the page, you should get a 401 unauthorized error in the console and the data won't load. Then add `v-if="$auth.$state.loggedIn"` in the NuxtLink in the Private Data page and now the link won't show in the navbar if you're not logged in.
 
 ### To Run 
-- `cd backend && bundle && rails s`
+- `cd backend && bundle`
+- `rails s`
 - in another tab, `cd frontend && yarn && npm run dev`
 - when frontend is done check for the url/port it says it's listening on and go there in your browser. it will be `http://localhost:<port>` but the port is chosen randomly each time
