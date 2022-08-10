@@ -200,6 +200,15 @@ before_action :authenticate_user!
 
 ### To Run 
 - `cd backend && bundle`
+- `rails db:drop db:create db:migrate` 
+- delete `backend/config/credentials.yml.enc`
+- `rails secret` and copy the the long output string 
+- `EDITOR='code --wait' rails credentials:edit` or `EDITOR="nano" rails credentials:edit`
+  - if VS Code asks you if you want to open the encrypted file, click `OK`
+  - delete the commented lines 
+  - for the first line, add `jwt_secret=<secret>` where `<secret>` is the long string you copied above
+  - save the file and close it
 - `rails s`
 - in another tab, `cd frontend && yarn && npm run dev`
 - when frontend is done check for the url/port it says it's listening on and go there in your browser. it will be `http://localhost:<port>` but the port is chosen randomly each time
+- if you can't login but it's giving you 200 status on the backend when you try, try the db and credential parts above again
